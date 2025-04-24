@@ -5,6 +5,8 @@
     <content url="file://$MODULE_DIR$/../../ktor">
       <excludeFolder url="file://$MODULE_DIR$/../../ktor/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/../../ktor/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../ktor/.idea" />
+      <excludeFolder url="file://$MODULE_DIR$/../../ktor/.kotlin" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -31,12 +31,22 @@ import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
+/**
+ * 配置框架相关的功能
+ * 包括依赖注入（Koin）等框架功能
+ */
 fun Application.configureFrameworks() {
+    // 安装Koin依赖注入框架
     install(Koin) {
+        // 配置SLF4J日志记录器
         slf4jLogger()
+
+        // 配置依赖注入模块
         modules(module {
+            // 注册HelloService为单例
             single<HelloService> {
                 HelloService {
+                    // 使用环境日志记录信息
                     println(environment.log.info("Hello, World!"))
                 }
             }

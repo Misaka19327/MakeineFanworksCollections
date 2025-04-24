@@ -31,9 +31,16 @@ import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
+/**
+ * 配置序列化相关的功能
+ * 包括JSON序列化和反序列化
+ */
 fun Application.configureSerialization() {
+    // 配置路由
     routing {
+        // 示例：返回JSON响应
         get("/json/kotlinx-serialization") {
+            // 使用Kotlinx序列化库将Map转换为JSON
             call.respond(mapOf("hello" to "world"))
         }
     }

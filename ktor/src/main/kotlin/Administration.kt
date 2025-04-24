@@ -31,6 +31,10 @@ import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
+/**
+ * 配置管理相关的功能
+ * 包括任务调度、应用关闭等管理功能
+ */
 fun Application.configureAdministration() {
 //    install(TaskScheduling) {
 ////         Choose task manager config based on your chosen task manager dependencies

@@ -31,9 +31,16 @@ import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
+/**
+ * 配置路由相关的功能
+ * 定义API端点和处理程序
+ */
 fun Application.configureRouting() {
+    // 配置路由
     routing {
+        // 根路径处理
         get("/") {
+            // 返回简单的文本响应
             call.respondText("Hello World!")
         }
     }

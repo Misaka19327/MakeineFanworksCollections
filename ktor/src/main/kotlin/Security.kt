@@ -31,24 +31,41 @@ import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
+/**
+ * 配置安全相关的功能
+ * 包括JWT认证等安全机制
+ */
 fun Application.configureSecurity() {
-    // Please read the jwt property from the config file if you are using EngineMain
-    val jwtAudience = "jwt-audience"
-    val jwtDomain = "https://jwt-provider-domain/"
-    val jwtRealm = "ktor sample app"
-    val jwtSecret = "secret"
+    // JWT配置参数
+    // 注意：在生产环境中应该从配置文件中读取这些值
+    val jwtAudience = "jwt-audience"                // JWT的目标受众
+    val jwtDomain = "https://jwt-provider-domain/"  // JWT发行者域名
+    val jwtRealm = "ktor sample app"                // JWT领域
+    val jwtSecret = "secret"                        // JWT签名密钥
+
+    // 配置认证机制
     authentication {
+        // 配置JWT认证
         jwt {
-            realm = jwtRealm
+            realm = jwtRealm  // 设置认证领域
+            
+            // 配置JWT验证器
             verifier(
                 JWT
-                    .require(Algorithm.HMAC256(jwtSecret))
-                    .withAudience(jwtAudience)
-                    .withIssuer(jwtDomain)
+                    .require(Algorithm.HMAC256(jwtSecret))  // 使用HMAC256算法和密钥
+                    .withAudience(jwtAudience)              // 设置目标受众
+                    .withIssuer(jwtDomain)                  // 设置发行者
                     .build()
             )
+
+            // 验证JWT凭证
             validate { credential ->
-                if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
+                // 检查JWT的受众是否匹配
+                if (credential.payload.audience.contains(jwtAudience)) {
+                    JWTPrincipal(credential.payload)  // 验证成功，返回JWT主体
+                } else {
+                    null  // 验证失败，返回null
+                }
             }
         }
     }

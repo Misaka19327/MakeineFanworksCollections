@@ -31,46 +31,55 @@ import org.koin.dsl.module
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
+/**
+ * 配置数据库相关的功能
+ * 包括数据库连接和用户CRUD操作的API端点
+ */
 fun Application.configureDatabases() {
+    // 配置H2内存数据库连接
     val database = Database.connect(
-        url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
-        user = "root",
-        driver = "org.h2.Driver",
-        password = "",
+        url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", // 使用H2内存数据库
+        user = "root",                              // 数据库用户名
+        driver = "org.h2.Driver",                   // H2数据库驱动
+        password = "",                              // 数据库密码
     )
+
+    // 创建用户服务实例
     val userService = UserService(database)
+
+    // 配置用户相关的路由
     routing {
-        // Create user
+        // 创建用户
         post("/users") {
-            val user = call.receive<ExposedUser>()
-            val id = userService.create(user)
-            call.respond(HttpStatusCode.Created, id)
+            val user = call.receive<ExposedUser>()  // 接收用户数据
+            val id = userService.create(user)       // 创建用户并获取ID
+            call.respond(HttpStatusCode.Created, id) // 返回创建状态和ID
         }
 
-        // Read user
+        // 读取用户信息
         get("/users/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            val user = userService.read(id)
+            val user = userService.read(id)         // 读取用户信息
             if (user != null) {
-                call.respond(HttpStatusCode.OK, user)
+                call.respond(HttpStatusCode.OK, user)  // 返回用户信息
             } else {
-                call.respond(HttpStatusCode.NotFound)
+                call.respond(HttpStatusCode.NotFound) // 用户不存在
             }
         }
 
-        // Update user
+        // 更新用户信息
         put("/users/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            val user = call.receive<ExposedUser>()
-            userService.update(id, user)
-            call.respond(HttpStatusCode.OK)
+            val user = call.receive<ExposedUser>()  // 接收更新的用户数据
+            userService.update(id, user)            // 更新用户信息
+            call.respond(HttpStatusCode.OK)         // 返回更新成功状态
         }
 
-        // Delete user
+        // 删除用户
         delete("/users/{id}") {
             val id = call.parameters["id"]?.toInt() ?: throw IllegalArgumentException("Invalid ID")
-            userService.delete(id)
-            call.respond(HttpStatusCode.OK)
+            userService.delete(id)                  // 删除用户
+            call.respond(HttpStatusCode.OK)         // 返回删除成功状态
         }
     }
 }
