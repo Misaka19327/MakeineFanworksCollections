@@ -7,7 +7,7 @@ ktor:
 
 database:
   driver: "org.postgresql.Driver"
-  url: "jdbc:postgresql://localhost:5432/interface_management"
+  url: "jdbc:postgresql://db:5432/mydb"
   username: "postgres"
   password: "pass"
   maximumPoolSize: 10
@@ -17,13 +17,13 @@ database:
 
 redis:
   default:
-    host: "localhost"
+    host: "redis"
     port: 6379
     password: ""
     timeout: 2000         # 毫秒
     db: 2
   task:
-    host: "localhost"
+    host: "redis"
     port: 6379
     password: ""
 

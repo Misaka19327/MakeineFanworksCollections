@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  app:
+    image: ktor-docker-image:latest
+    build:
+      context: ./ktor-app
+    container_name: ktor-service
+    environment:
+      - APP_ENV=production
+      - JDBC_URL=jdbc:postgresql://db:5432/mydb
+      - DB_USER=postgres
+      - DB_PASSWORD=pass
+      - REDIS_URL=redis://redis:6379
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - redis
+    networks:
+      - ktor_net
+
+  db:
+    image: postgres:16
+    container_name: postgres-service
+    restart: no
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - ktor_net
+
+  redis:
+    image: redis:7
+    container_name: redis-service
+    restart: no
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    networks:
+      - ktor_net
+
+volumes:
+  pg_data:
+  redis_data:
+
+networks:
+  ktor_net:
+    driver: bridge
