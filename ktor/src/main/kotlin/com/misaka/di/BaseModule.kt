@@ -8,8 +8,11 @@ import io.lettuce.core.api.StatefulRedisConnection
 import io.lettuce.core.api.async.RedisAsyncCommands
 import io.lettuce.core.api.sync.RedisCommands
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.DatabaseConfig
+import org.jetbrains.exposed.sql.SqlLogger
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 val BaseModule = module {
@@ -26,11 +29,16 @@ val BaseModule = module {
         val password = config.property("database.password").getString()
         val driver = config.propertyOrNull("database.driver")?.getString() ?: "org.postgresql.Driver"
 
+        val logger by inject<Logger>(named(LoggerType.SqlLogger))
+
         Database.connect(
             url = url,
             user = user,
             driver = driver,
             password = password,
+            databaseConfig = DatabaseConfig {
+                sqlLogger = logger as SqlLogger
+            }
         )
     }
 
