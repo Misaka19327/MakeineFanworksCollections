@@ -50,4 +50,11 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 
     implementation("org.postgresql:postgresql:42.7.3")
+    implementation(kotlin("stdlib"))
+}
+repositories {
+    mavenCentral()
+}
+kotlin {
+    jvmToolchain(17)
 }
