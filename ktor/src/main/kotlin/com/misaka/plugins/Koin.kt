@@ -1,7 +1,7 @@
 package com.misaka.plugins
 
 import com.misaka.di.BaseModule
-import com.misaka.di.HelloModule
+import com.misaka.di.AuthModule
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import org.koin.core.context.startKoin
@@ -19,8 +19,8 @@ fun Application.configureKoin() {
                     config // 解决本地运行时 koin 找不到 Application 实例的问题
                 }
             },
-            HelloModule,
-            BaseModule
+            BaseModule,
+            AuthModule
         )
     }
 }

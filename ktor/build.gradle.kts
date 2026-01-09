@@ -5,7 +5,7 @@ val kotlinVersion: String by project
 val logbackVersion: String by project
 
 plugins {
-    kotlin("jvm") version "2.1.10"
+    kotlin("jvm") version "2.2.20"
     id("io.ktor.plugin") version "3.2.3"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10"
 }
@@ -45,11 +45,14 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.ktor:ktor-server-config-yaml")
     implementation("io.lettuce:lettuce-core:6.8.1.RELEASE")
+    implementation("io.ktor:ktor-server-host-common:3.2.3")
+    implementation("io.ktor:ktor-server-status-pages:3.2.3")
 
     testImplementation("io.ktor:ktor-server-test-host")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion")
 
     implementation("org.postgresql:postgresql:42.7.3")
+    implementation("org.mindrot:jbcrypt:0.4")
     implementation(kotlin("stdlib"))
 }
 repositories {
